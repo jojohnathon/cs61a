@@ -61,6 +61,13 @@ def about(keywords: list[str]):
 
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    def check(paragraph):
+        word_list = [remove_punctuation(lower(word)) for word in split(paragraph)]
+        for keyword in keywords:
+            if keyword in word_list:
+                return True
+        return False
+    return check
     # END PROBLEM 2
 
 
