@@ -27,6 +27,14 @@ def insert_items(s: list[int], before: int, after: int) -> list[int]:
     True
     """
     "*** YOUR CODE HERE ***"
+    i = 0
+    while i < len(s):
+      if s[i] == before:
+          s.insert(i + 1, after)
+          i += 2
+      else:
+          i += 1
+    return s
 
 
 def group_by(s: list[int], fn) -> dict[int, list[int]]:
@@ -40,12 +48,17 @@ def group_by(s: list[int], fn) -> dict[int, list[int]]:
     {9: [-3, 3], 4: [-2, 2], 1: [-1, 1], 0: [0]}
     """
     grouped = {}
-    for ____ in ____:
-        key = ____
-        if key in grouped:
-            ____
+    for e in s:
+        key = fn(e)
+        print('DEBUG: key is ', key)
+        print('DEBUG: e is', e)
+
+        if key in grouped: 
+            print('DEBUG: key in grouped')
+            grouped[key].append(e)
         else:
-            grouped[key] = ____
+            print('DEBUG: key not in grouped')
+            grouped[key] = [e]
     return grouped
 
 
@@ -72,6 +85,12 @@ def count_occurrences(t: Iterator[int], n: int, x: int) -> int:
     2
     """
     "*** YOUR CODE HERE ***"
+    count = 0
+
+    for i in range(n):
+      if next(t) == x:
+          count += 1
+    return count  
 
 
 from typing import Iterator # "t: Iterator[int]" means t is an iterator that yields integers
@@ -96,6 +115,18 @@ def repeated(t: Iterator[int], k: int) -> int:
     """
     assert k > 1
     "*** YOUR CODE HERE ***"
+    prev = next(t)
+    count = 1
+    for value in t:
+        if value == prev:
+            count += 1
+        else:
+            prev = value
+            count = 1
+        if count == k:
+            return value
+        
+        
 
 
 def sprout_leaves(t, leaves):
