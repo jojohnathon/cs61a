@@ -13,6 +13,11 @@ def shuffle(s):
     """
     assert len(s) % 2 == 0, 'len(seq) must be even'
     "*** YOUR CODE HERE ***"
+    mid = len(s) //  2
+    left = s[:mid]
+    right = s[mid:]
+    return [x for pair in zip(left, right) for x in pair]
+    
 
 
 def deep_map(f, s):
@@ -38,6 +43,24 @@ def deep_map(f, s):
     True
     """
     "*** YOUR CODE HERE ***"
+    if type(s) == int:
+        return None
+    for i, e in enumerate(s):
+        if type(e) == list:
+            print("DEBUG: e is list: ", type(e) == list)
+            # for nested_e in e:
+            #     print("DEBUG: nested_e is ", nested_e)
+            #     if type(nested_e) == list:
+            #         print("DEBUG: nested_e is ", type(e) == list)
+            deep_map(f, e)
+                # else:
+                #     e[i] = f(e[i])
+        else:
+            print("DEBUG: s[i] is ", s[i])
+            s[i] = f(s[i])
+    return None
+    
+
 
 
 SOURCE_FILE = __file__
@@ -47,11 +70,13 @@ def planet(mass):
     """Construct a planet of some mass."""
     assert mass > 0
     "*** YOUR CODE HERE ***"
+    return ['planet', mass]
 
 def mass(p):
     """Select the mass of a planet."""
     assert is_planet(p), 'must call mass on a planet'
     "*** YOUR CODE HERE ***"
+    return p[1]
 
 def is_planet(p):
     """Whether p is a planet."""
@@ -104,7 +129,13 @@ def balanced(m):
     True
     """
     "*** YOUR CODE HERE ***"
-
+    if is_planet(m):
+        return True
+    left_arm = left(m)
+    right_arm = right(m)
+    l_torque = length(left_arm) * total_mass(end(left_arm))
+    r_torque = length(right_arm) * total_mass(end(right_arm))
+    return l_torque == r_torque and balanced(end(left_arm)) and balanced(end(right_arm))
 
 def berry_finder(t):
     """Returns True if t contains a node with the value 'berry' and 
@@ -124,6 +155,12 @@ def berry_finder(t):
     True
     """
     "*** YOUR CODE HERE ***"
+    if label(t) == 'berry':
+        return True
+    for b in branches(t):
+        if berry_finder(b):
+            return True
+    return False
 
 
 SOURCE_FILE = __file__
@@ -139,6 +176,9 @@ def max_path_sum(t):
     17
     """
     "*** YOUR CODE HERE ***"
+    if is_leaf(t):
+        return label(t)
+    return label(t) + max(max_path_sum(b) for b in branches(t))
 
 
 def mobile(left, right):
