@@ -147,14 +147,14 @@ class Server:
         """Append the email to the inbox of the client it is addressed to.
             email is an instance of the Email class.
         """
-        ____.inbox.append(email)
+        self.clients[email.recipient_name].inbox.append(email)
 
     def register_client(self, client):
         """Add a client to the clients mapping (which is a 
         dictionary from client names to client instances).
             client is an instance of the Client class.
         """
-        ____[____] = ____
+        self.clients[client.name] = client
 
 class Client:
     """A client has a server, a name (str), and an inbox (list).
@@ -177,11 +177,11 @@ class Client:
         self.inbox: list = []
         self.server = server
         self.name = name
-        server.register_client(____)
+        server.register_client(self)
 
     def compose(self, message: str, recipient_name: str):
         """Send an email with the given message to the recipient."""
-        email = Email(message, ____, ____)
+        email = Email(message, self, recipient_name)
         self.server.send(email)
 
 
@@ -215,15 +215,18 @@ class Mint:
     125
     """
     present_year = 2025
+    year = present_year
 
     def __init__(self):
         self.update()
 
     def create(self, coin):
         "*** YOUR CODE HERE ***"
+        return coin(self.present_year)
+
 
     def update(self) -> None:
-        "*** YOUR CODE HERE ***"
+        self.present_year = Mint.present_year
 
 class Coin:
     cents = None # will be provided by subclasses, but not by Coin itself
@@ -233,6 +236,12 @@ class Coin:
 
     def worth(self) -> int:
         "*** YOUR CODE HERE ***"
+        age = Mint.present_year - self.year
+        worth = 0
+        if age > 50:
+            worth += age - 50
+        worth += self.cents   
+        return worth
 
 class Nickel(Coin):
     cents = 5
