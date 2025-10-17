@@ -72,7 +72,15 @@ def stair_ways(n):
     []
     """
     "*** YOUR CODE HERE ***"
-
+    if n == 0:
+        yield []
+        return
+    if n < 0:
+        return
+    for way in stair_ways(n - 1):
+        yield [1] + way
+    for way in stair_ways(n - 2):
+        yield [2] + way 
 
 def yield_paths(t, value):
     """
