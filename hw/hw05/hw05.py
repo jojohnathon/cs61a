@@ -118,10 +118,13 @@ def yield_paths(t, value):
     [[0, 2], [0, 2, 1, 2]]
     """
     if label(t) == value:
-        yield ____
+        print("DEBUG: value: ", value)
+        yield [label(t)]
     for b in branches(t):
-        for ____ in ____:
-            yield ____
+        print("DEBUG: branches: ", b)
+        for subpaths in yield_paths(b, value):
+            print("DEBUG: subpaths: ", subpaths)
+            yield [label(t)] + subpaths 
 
 
 
