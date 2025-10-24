@@ -123,11 +123,23 @@ def store_digits(n: int):
     >>> cleaned = re.sub(r"#.*\\n", '', re.sub(r'"{3}[\s\S]*?"{3}', '', inspect.getsource(store_digits)))
     >>> print("Do not use str or reversed!") if any([r in cleaned for r in ["str", "reversed"]]) else None
     """
-    "*** YOUR CODE HERE ***"
+    def helper(n, divisor):
+        if divisor == 0:
+            return Link.empty
+        else:
+            digit = (n // divisor) % 10
+            return Link(digit, helper(n, divisor // 10))
+    
     if n == 0:
-        return Link.empty
-    else:
-        return Link(n % 10, store_digits(n // 10))
+        return Link(0)
+    
+    divisor = 1
+    temp = n
+    while temp >= 10:
+        divisor *= 10
+        temp //= 10
+    
+    return helper(n, divisor)
 
     
 
@@ -151,7 +163,15 @@ def deep_map_mut(func, s: Link) -> None:
     >>> print(link1)
     (9 (16) 25 36)
     """
-    "*** YOUR CODE HERE ***"
+    if s is Link.empty:
+        return
+    
+    if isinstance(s.first, Link):
+        deep_map_mut(func, s.first)
+    else:
+        s.first = func(s.first)
+    
+    deep_map_mut(func, s.rest)
 
 
 def prune_small(t, n):
@@ -171,11 +191,12 @@ def prune_small(t, n):
     >>> t3
     Tree(6, [Tree(1), Tree(3, [Tree(1), Tree(2)])])
     """
-    while ____:
-        largest = max(____, key=____)
-        ____
+    while len(t.branches) > n:
+        largest = max(t.branches, key=lambda b: b.label)
+        t.branches.remove(largest)
+    
     for b in t.branches:
-        ____
+        prune_small(b, n)
 
 
 def delete(t, x):
@@ -198,13 +219,13 @@ def delete(t, x):
     Tree(1, [Tree(4), Tree(5), Tree(3, [Tree(6)]), Tree(6), Tree(7), Tree(8), Tree(4)])
     """
     new_branches = []
-    for _________ in ________________:
-        _______________________
+    for b in t.branches:
+        delete(b, x)  
         if b.label == x:
-            __________________________________
+            new_branches.extend(b.branches)
         else:
-            __________________________________
-    t.branches = ___________________
+            new_branches.append(b)
+    t.branches = new_branches
 
 
 def two_list(vals, counts):
