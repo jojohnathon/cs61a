@@ -48,9 +48,9 @@ def do_define_form(expressions, env):
         symbol = signature.first
         formals = signature.rest
         body = expressions.rest 
-        print("DEBUG: ", symbol)
-        print("DEBUG: ", formals)
-        print("DEBUG: ", env)
+        # print("DEBUG: ", symbol)
+        # print("DEBUG: ", formals)
+        # print("DEBUG: ", env)
         lambda_expr = Link(formals, body)
         env.define(symbol, do_lambda_form(lambda_expr, env))
         return symbol 
@@ -131,6 +131,15 @@ def do_and_form(expressions, env):
     """
     # BEGIN PROBLEM 12
     "*** YOUR CODE HERE ***"
+    if expressions is nil:
+        return True
+    result = True
+    while expressions is not nil:
+        result = scheme_eval(expressions.first, env)
+        if is_scheme_false(result):
+            return result
+        expressions = expressions.rest
+    return result
     # END PROBLEM 12
 
 def do_or_form(expressions, env):
@@ -149,6 +158,15 @@ def do_or_form(expressions, env):
     """
     # BEGIN PROBLEM 12
     "*** YOUR CODE HERE ***"
+    if expressions is nil:
+        return False
+    result = False
+    while expressions is not nil:
+        result = scheme_eval(expressions.first, env)
+        if is_scheme_true(result):
+            return result
+        expressions = expressions.rest
+    return result
     # END PROBLEM 12
 
 def do_cond_form(expressions, env):
@@ -235,6 +253,8 @@ def do_mu_form(expressions, env):
     validate_formals(formals)
     # BEGIN PROBLEM 11
     "*** YOUR CODE HERE ***"
+    body = expressions.rest
+    return MuProcedure(formals, body)
     # END PROBLEM 11
 
 

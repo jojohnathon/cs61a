@@ -53,7 +53,7 @@ def scheme_apply(procedure, args, env):
         pargs = []
         while args is not Link.empty:
             pargs.append(args.first)
-            print("DEBUG: ", pargs)
+            # print("DEBUG: ", pargs)
             args = args.rest
         if procedure.need_env:
             pargs.append(env)
@@ -61,7 +61,7 @@ def scheme_apply(procedure, args, env):
         try:
             # BEGIN PROBLEM 2
             "*** YOUR CODE HERE ***"
-            print("DEBUG: ", pargs)
+            # print("DEBUG: ", pargs)
             return procedure.py_func(*pargs)
             # END PROBLEM 2
         except TypeError as err:
@@ -75,6 +75,8 @@ def scheme_apply(procedure, args, env):
     elif isinstance(procedure, MuProcedure):
         # BEGIN PROBLEM 11
         "*** YOUR CODE HERE ***"
+        new_frame = env.make_child_frame(procedure.formals, args)
+        return eval_all(procedure.body, new_frame)
         # END PROBLEM 11
     else:
         assert False, "Unexpected procedure: {}".format(procedure)
